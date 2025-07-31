@@ -7,13 +7,13 @@ exchange = ccxt.bybit({
     "enableRateLimit": True,
 })
 
-def get_candles(symbol="ATOM/USDT", timeframe="15m", limit=200):
+def get_candles(symbol="BTC/USDT", timeframe="15m", limit=200):
     markets = exchange.load_markets()
     if symbol not in markets:
-        # попробуем без слэша
         alt_symbol = symbol.replace("/", "")
         if alt_symbol in markets:
             symbol = alt_symbol
         else:
-            raise ValueError(f"❌ Пара {symbol} не найдена на Bybit. Доступные: {list(markets.keys())[:10]}")
-    return exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
+            raise ValueError(f"❌ Пара {symbol} не найдена на Bybit.")
+    ohlcv = exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
+    return ohlcv
